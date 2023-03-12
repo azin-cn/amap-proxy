@@ -13,9 +13,9 @@ export class AppController {
   ): Promise<object> {
     try {
       const data = await this.appService.getMapJsonWithCode(code, isFull);
-      return new ResultVO(200, data, 'ok');
+      return new ResultVO(20000, data, 'ok');
     } catch (error) {
-      return new ResultVO(500, {}, 'fail');
+      return new ResultVO(50000, {}, 'fail');
     }
   }
 }
