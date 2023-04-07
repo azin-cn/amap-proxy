@@ -10,12 +10,12 @@ export class AppController {
   async getMapJsonWithCode(
     @Query('code') code: string,
     @Query('isFull') isFull?: boolean,
-  ): Promise<object> {
+  ): Promise<ResultVO> {
     try {
       const data = await this.appService.getMapJsonWithCode(code, isFull);
-      return new ResultVO(20000, data, 'ok');
+      return ResultVO.success(data);
     } catch (error) {
-      return new ResultVO(50000, {}, 'fail');
+      return ResultVO.fail(error);
     }
   }
 }

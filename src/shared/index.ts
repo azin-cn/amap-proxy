@@ -1,17 +1,23 @@
 export class ResultVO {
   constructor(
-    private code?: number,
     private data?: any,
-    private msg?: string,
+    private errMsg?: string,
+    private errCode?: number,
   ) {}
 
   public setCode(code: number) {
-    this.code = code;
+    this.errCode = code;
   }
   public setMsg(msg: string) {
-    this.msg = msg;
+    this.errMsg = msg;
   }
   public setData(data: any) {
     this.data = data;
+  }
+  public static success(data: any = null, code = 200, msg = 'success') {
+    return new ResultVO(data, msg, code);
+  }
+  public static fail(data: any = null, code = 500, msg = 'fail') {
+    return new ResultVO(data, msg, code);
   }
 }
