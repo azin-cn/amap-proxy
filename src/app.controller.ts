@@ -1,6 +1,6 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { AppService } from './app.service';
-import { ResultVO } from './shared';
+import { ResultVO } from './shared/vo/ResultVO';
 
 @Controller('map')
 export class AppController {
@@ -11,11 +11,7 @@ export class AppController {
     @Query('code') code: string,
     @Query('isFull') isFull?: boolean,
   ): Promise<ResultVO> {
-    try {
-      const data = await this.appService.getMapJsonWithCode(code, isFull);
-      return ResultVO.success(data);
-    } catch (error) {
-      return ResultVO.fail(error);
-    }
+    const data = await this.appService.getMapJsonWithCode(code, isFull);
+    return ResultVO.success(data);
   }
 }

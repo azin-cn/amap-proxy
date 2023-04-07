@@ -1,6 +1,6 @@
 import * as fs from 'fs/promises';
 import * as path from 'path';
-import { Injectable } from '@nestjs/common';
+import { Injectable, ServiceUnavailableException } from '@nestjs/common';
 import config from './config/config';
 import * as MapApi from './api/map';
 import { existsSync } from './utils/file';
@@ -21,6 +21,7 @@ export class AppService {
 
     if (existsSync(filepath)) {
       console.log(new Date().toLocaleString(), 'local file', filename);
+
       const data = await fs.readFile(filepath);
       return JSON.parse(data.toString());
     }
@@ -28,19 +29,12 @@ export class AppService {
     console.log(new Date().toLocaleString(), 'request file', filename);
     const fileHandle = await fs.open(filepath, 'w+');
 
-    try {
-      const url = `${config.mapPrefixUrl}${
-        config.mapPrefixUrl.endsWith('/') ? '' : '/'
-      }${filename}`;
+    const url = `${config.mapPrefixUrl}${
+      config.mapPrefixUrl.endsWith('/') ? '' : '/'
+    }${filename}`;
 
-      const data = await MapApi.getJson(url);
-      fileHandle.writeFile(JSON.stringify(data));
-      return data;
-    } catch (error) {
-      console.error(error);
-    } finally {
-      fileHandle.close();
-    }
-    return {};
+    const data = await MapApi.getJson(url);
+    fileHandle.writeFile(JSON.stringify(data));
+    return data;
   }
 }
