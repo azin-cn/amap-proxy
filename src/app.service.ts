@@ -18,13 +18,14 @@ export class AppService {
   async getMapJsonWithCode(code: string, isFull = true): Promise<object> {
     const filename = `${code}${config.split}${isFull ? 'full' : ''}.json`; // 100000_full.json
     const filepath = path.join(config.rootDir, filename);
-    console.log(new Date().toLocaleString(), filename);
 
     if (existsSync(filepath)) {
+      console.log(new Date().toLocaleString(), 'local file', filename);
       const data = await fs.readFile(filepath);
       return JSON.parse(data.toString());
     }
 
+    console.log(new Date().toLocaleString(), 'request file', filename);
     const fileHandle = await fs.open(filepath, 'w+');
 
     try {
@@ -33,7 +34,7 @@ export class AppService {
       }${filename}`;
 
       const data = await MapApi.getJson(url);
-      await fileHandle.writeFile(JSON.stringify(data));
+      fileHandle.writeFile(JSON.stringify(data));
       return data;
     } catch (error) {
       console.error(error);
