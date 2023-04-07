@@ -7,7 +7,7 @@ export class CacheControlMiddleware implements NestMiddleware {
     /**
      * 设置响应头，出现异常则由过滤器去除
      */
-    res.setHeader('Cache-Control', 'max-age=31536000'); // 一年过期
+    res.setHeader('Cache-Control', `max-age=${60 * 60 * 24 * 3}`);
     next();
   }
 }
