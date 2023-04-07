@@ -35,6 +35,7 @@ export class AppService {
 
     const data = await MapApi.getJson(url);
     fileHandle.writeFile(JSON.stringify(data));
+    fileHandle?.close();
     return data;
   }
 }
